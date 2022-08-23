@@ -2,7 +2,7 @@
   <div>
     <main class="filter">
       <h1 class="fl"><router-link to="/recipelist"><img src="@/assets/images/icon_back.png" alt="돌아가기" title="돌아가기" /></router-link><span class="color-orange padding-left-15">{{ $t("title.RecipeFilter") }}</span></h1>
-      <div class="fr margin-top-20" @click="clearFilter">초기화</div>
+      <div class="fr margin-top-20"><input type="button" value="초기화" @click="clearFilter" /></div>
       <div class="wrap_period">
         <dl class="period1" v-for="(item, idx) in $t('option.period_s')" :key="item.i">
           <dt class="menu" :class="{on : selectedPeriod == idx}" @click="setSelectedPeriod(idx)">{{item[0]}}</dt><dd class="month">{{item[1]}}</dd>
@@ -73,12 +73,18 @@ export default {
       }
       this.selectedPeriod = this.period;
       this.slider.value = this.timeTaken;
-      this.selectedIngredientIds = this.ingredientIds;
+      this.selectedIngredientIds = [...this.ingredientIds];
       this.callIngredientCategory();
     },
 
     clearFilter() {
+      this.selectedIngredientIds = [];
+      this.selectedPeriod = -1;
+      this.slider.value = 4;
 
+      this.setIngredientIds(this.selectedIngredientIds);
+      this.setPeriod(this.selectedPeriod);
+      this.setTimeTaken(this.slider.value);
     },
 
     setSelectedPeriod(idx){
